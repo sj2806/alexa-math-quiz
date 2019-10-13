@@ -1,0 +1,102 @@
+import java.util.*;  
+public class Main
+{
+    void minToFront(ArrayList<Integer> list) {
+        Iterator itr = list.iterator();
+        int min = list.get(0);
+        while(itr.hasNext()) {
+            int num = (int)itr.next();
+            if(num<min) {
+                min = num;
+            }
+        }
+        list.remove(new Integer(min));
+        list.add(0,min);
+    }
+    
+    void filterRange(ArrayList<Integer> list, int min, int max) {
+        list.removeIf(num -> (num>=min)&&(num<=max) );   
+    }
+    
+    
+    ArrayList<Integer> intersect(ArrayList<Integer> list1, ArrayList<Integer> list2) {
+        ArrayList<Integer> resList = new ArrayList<Integer>();
+        Iterator itr1 = list1.iterator();
+        Iterator itr2 = list2.iterator();
+        int val1 = list1.get(0);
+        int val2 = list2.get(0);
+        while(itr1.hasNext() && itr2.hasNext()) {
+            if(val1==val2) {
+                resList.add(val1);
+                val1 = (int)itr1.next();
+                val2 = (int)itr2.next();
+            }
+            else if(val1<val2) {
+                val1 = (int)itr1.next();
+            }
+            else {
+                val2 = (int)itr2.next();
+            }
+        }
+        if(val1==val2) {
+                resList.add(val1);
+        }
+        return resList;
+    }
+    
+    
+	public static void main(String[] args) {
+		System.out.println("Hello World");
+		Main obj = new Main();
+		ArrayList<Integer> intList = new ArrayList<Integer>();
+		intList.add(4);
+		intList.add(7);
+		intList.add(9);
+		intList.add(2);
+		intList.add(7);
+		intList.add(7);
+		intList.add(5);
+		intList.add(3);
+		intList.add(5);
+		intList.add(1);
+		intList.add(7);
+		intList.add(8);
+		intList.add(6);
+		intList.add(7);
+        obj.minToFront(intList);
+        for(int temp:intList)
+            System.out.print(temp+" ");
+        obj.filterRange(intList,5,7);
+        System.out.println();
+        for(int temp:intList)
+            System.out.print(temp+" ");
+        ArrayList<Integer> intList1 = new ArrayList<Integer>();
+		intList1.add(1);
+		intList1.add(4);
+		intList1.add(8);
+		intList1.add(9);
+		intList1.add(11);
+		intList1.add(15);
+		intList1.add(17);
+		intList1.add(28);
+		intList1.add(41);
+		intList1.add(59);
+		ArrayList<Integer> intList2 = new ArrayList<Integer>();
+		intList2.add(4);
+		intList2.add(7);
+		intList2.add(11);
+		intList2.add(17);
+		intList2.add(19);
+		intList2.add(20);
+		intList2.add(23);
+		intList2.add(28);
+		intList2.add(37);
+		intList2.add(59);
+        intList2.add(81);
+        ArrayList<Integer> intersection = obj.intersect(intList1,intList2);
+        System.out.println();
+        for(int temp:intersection)
+            System.out.print(temp+" ");
+		 
+	}
+}
