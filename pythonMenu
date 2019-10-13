@@ -1,0 +1,38 @@
+print("Miles per Gallon Calculations\n\n")
+print("Enter information about your car's mpg and gasoline.\n");
+mpg_c = float(input("MPG in city: "))
+mpg_h = float(input("MPG on highway: "))
+price = float(input("Current price of gallon of gas: "))
+tankCap = float(input("Capacity of your gas tank: "))
+while True:
+	print("\nM - Mixed travel cost\nC - Max miles in city\nH - Max miles on highway\nD - Miles for set cost\nR - Reset data\nQ - Quit program\n")
+	choice = input("Your choice: ").lower().rstrip()
+	print("\n")
+	if choice=='m':
+		m_c = float(input("Miles driven in city: "))
+		m_h = float(input("Miles driven on highway: "))
+		m_t = m_c + m_h;
+		gas = m_c/mpg_c + m_h/mpg_h
+		cost = gas * price
+		print("You drove a total of",round(m_t,1),"miles, using",round(gas,1),"gallons of gas costing",round(cost,2),"\n")
+	elif choice=='c':
+		fullInCity = tankCap * mpg_c
+		print("On a full tank, you can drive",round(fullInCity,1),"city miles.\n")
+	elif choice=='h':
+		fullOnHighway = tankCap * mpg_h;
+		print("On a full tank, you can drive",round(fullOnHighway,1),"city miles.\n");
+	elif choice=='d':
+		moneyUser = float(input("Money you have for gas: "))
+		city = moneyUser/price*mpg_c;
+		high = moneyUser/price*mpg_h;
+		print("You can drive",round(city,1),"miles in the city or",round(high,1),"miles on the highway\n");
+	elif choice=='r':
+		mpg_c = float(input("MPG in city: "))
+		mpg_h = float(input("MPG on highway: "))
+		price = float(input("Current price of gallon of gas: "))
+		tankCap = float(input("Capacity of your gas tank: "))
+	elif choice=='q':
+		print("Thank you!\nBye.\n")
+		break
+	else:
+		print("Wrong choice entered. Please try again!\n")
