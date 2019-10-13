@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include <string.h>
+
+void outputHeaders();
+void initialBalance(double amount, double* balance, double* service, double* openBalance);
+void deposit(double amount, double* balance, double* service, int* numDeposit, double* amtDeposit);
+void check(double amount, double* balance, double* service, int* numCheck, double* amtCheck);
+void outputSummary(int numDeposit, double amtDeposit, int numCheck, double amtCheck, double openBalance, double service, double closeBalance);
+
+
+
+int main(void) {
+	char code;
+	double amount, service, balance;
+	double amtCheck, amtDeposit, openBalance, closeBalance;
+	int numCheck, numDeposit;
+	FILE *fpIn, *fpOut;
+	if(!(fopen_s(&fpIn, "account.txt","r"))) {
+		printf("account.txt could not be opened for input.");
+		exit(1);
+	}
+	if(!(fopen_s(&fpOut,"csis.txt","w"))) {
+		printf("csis.txt could not be opened for output.");
+		exit(1);
+	}
+	amount = 0.0;
+	service = 0.0;
+	balance = 0.0;
+	amtCheck = 0.0;
+	amtDeposit = 0.0;
+	openBalance = 0.0;
+	closeBalance = 0.0;
+	numCheck = 0;
+	numDeposit = 0;
+	
+	outputHeaders();
+	while(!feof(fpIn)) {
+		fscanf_s(fpIn, "%c %lf\n",&code,1,&amount);
+		if(code=='I') {
+			initialBalance(amount, &balance, &service, &openBalance);
+		}
+		else if(code=='D') {
+			deposit(amount, &balance, &service, &numDeposit, &amtDeposit);
+		}
+		else {
+			check(amount, &balance, &service, &numCheck, &amtCheck);
+		}
+	}
+	closeBalance = balance - service;
+	outputSummary(numDeposit, amtDeposit, numCheck, amtCheck, openBalance, service, closeBalance);
+	fclose(fpIn);
+	fclose(fpOut);
+	return 0;
+}
+
+
+void outputHeaders() {
+	printf("Transaction       Deposit       Check       Balance\n");
+	printf("-----------       -------       -----       -------\n");
+}
+
+
+void initialBalance(double amount, double* balance, double* service, double* openBalance) {
+	*balance = amount;
+	*service = 3.0;
+	*openBalance = amount;
+	printf("Initial Balance                           %10f\n",amount);
+}
+
+
+void deposit(double amount, double* balance, double* service, int* numDeposit, double* amtDeposit) {
+	*balance = *balance + amount;
+	*service = *service + 0.03;
+	*numDeposit = *numDeposit + 1;
+	*amtDeposit = *amtDeposit + amount;
+	printf("Initial Balance %10f                %10f\n",amount,*balance);
+}
+
+
+void check(double amount, double* balance, double* service, int* numCheck, double* amtCheck) {
+	*balance = *balance - amount;
+	if((*balance<0)&&(!(*balance+amount<0)))
+		*service = *service + 5.0;
+	*service = *service + 0.06;
+	*numCheck = *numCheck + 1;
+	*amtCheck = *amtCheck - amount;
+	printf("Initial Balance            %10f     %10f\n",amount,*balance);
+}
+
+
+void outputSummary(int numDeposit, double amtDeposit, int numCheck, double amtCheck, double openBalance, double service, double closeBalance) {
+	printf("Total number deposits: %d\n",numDeposit);
+	printf("Total amount deposits: %f\n\n",amtDeposit);
+	printf("  Total number checks: %d\n",numCheck);
+	printf("  Total amount checks: %f\n\n",amtCheck);
+	printf(" Total service charge: %f\n\n",service);
+	printf("      Opening balance: %f\n",openBalance);
+	printf("      Closing balance: %f\n",closeBalance);
+}
